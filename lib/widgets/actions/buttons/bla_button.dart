@@ -3,7 +3,7 @@ import 'package:week_3_blabla_project/theme/theme.dart';
 
 class BlaButton extends StatelessWidget {
   final Icon? icon;
-  final VoidCallback onUsed; // to do some action
+  final VoidCallback onPressed; // to do some action
   final String type; // set to know what type of button ( primary and secondary)
   final String text;
   final double? iconSize;
@@ -11,7 +11,7 @@ class BlaButton extends StatelessWidget {
   const BlaButton({
     super.key,
     this.icon,
-    required this.onUsed,
+    required this.onPressed,
     required this.type,
     required this.text,
     this.iconSize = 18.0 ,
@@ -32,7 +32,7 @@ class BlaButton extends StatelessWidget {
     // set condition for primary and secondary button
     if (type == 'PRIMARY') {
       return ElevatedButton.icon(
-        onPressed: onUsed,
+        onPressed: onPressed,
         label: Text(
           text,
           style: BlaTextStyles.label,
@@ -51,7 +51,7 @@ class BlaButton extends StatelessWidget {
 
     // Secondary Button
     return ElevatedButton.icon(
-      onPressed: onUsed,
+      onPressed: onPressed,
       label: Text(
         text,
         style: BlaTextStyles.label,

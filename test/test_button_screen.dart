@@ -19,7 +19,7 @@ class TestButtonScreen extends StatelessWidget {
             BlaButton(
               text: 'Primary Button',
               type: 'PRIMARY',
-              onUsed: () {
+              onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Primary button pressed!')),
                 );
@@ -32,7 +32,7 @@ class TestButtonScreen extends StatelessWidget {
               text: 'Primary with Icon',
               type: 'PRIMARY',
               icon: const Icon(Icons.message),
-              onUsed: () {
+              onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Primary icon button pressed!')),
                 );
@@ -44,7 +44,7 @@ class TestButtonScreen extends StatelessWidget {
             BlaButton(
               text: 'Secondary Button',
               type: 'SECONDARY',
-              onUsed: () {
+              onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Secondary button pressed!')),
                 );
@@ -57,7 +57,7 @@ class TestButtonScreen extends StatelessWidget {
               text: 'Secondary with Icon',
               type: 'SECONDARY',
               icon: const Icon(Icons.schedule),
-              onUsed: () {
+              onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Secondary icon button pressed!')),
                 );
