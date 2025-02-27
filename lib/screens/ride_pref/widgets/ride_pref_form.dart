@@ -6,6 +6,7 @@ import '../../../model/ride_pref/ride_pref.dart';
 import 'package:week_3_blabla_project/theme/theme.dart';
 import 'package:week_3_blabla_project/widgets/actions/buttons/bla_button.dart';
 import 'package:week_3_blabla_project/widgets/display/bla_divider.dart';
+import 'package:week_3_blabla_project/screens/location/widgets/location_picker_screen.dart';
 
 /// A Ride Preference Form to select:
 ///   - A departure location
@@ -49,6 +50,28 @@ class _RidePrefFormState extends State<RidePrefForm> {
   // Handle events
   // ----------------------------------
 
+  // Navigate to location picker and handle selection
+  Future<void> _selectLocation(bool isDeparture) async {
+    final Location? selectedLocation = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LocationPickerScreen(
+          title: isDeparture ? "Select departure" : "Select destination", 
+        ),
+      ),
+    );
+    
+    if (selectedLocation != null) {
+      setState(() {
+        if (isDeparture) {
+          departure = selectedLocation;
+        } else {
+          arrival = selectedLocation;
+        }
+      });
+    }
+  }
+
   // Open date picker
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -85,11 +108,21 @@ class _RidePrefFormState extends State<RidePrefForm> {
   // This function can be used to build ListTile components for departure, arrival, date, etc.
   Widget _buildLocationTile(String title, Location? location, Function onTap, {bool isDeparture = true}) {
     return ListTile(
-      leading: Icon(Icons.radio_button_unchecked_rounded, color: BlaColors.neutralLight),
+      leading: Icon(
+        isDeparture ? Icons.radio_button_unchecked_rounded : Icons.location_on_outlined, 
+        color: BlaColors.neutralLight
+      ),
       title: Text(
         location?.name ?? title,
-        style: BlaTextStyles.label.copyWith(color: BlaColors.neutralLight),
+        style: BlaTextStyles.label.copyWith(
+          color: location != null ? BlaColors.neutralDark : BlaColors.neutralLight
+        ),
       ),
+      subtitle: location != null ? 
+        Text(
+          location.country.toString().split('.').last,
+          style: BlaTextStyles.label.copyWith(color: BlaColors.neutralLighter),
+        ) : null,
       trailing: isDeparture
           ? GestureDetector(
               onTap: _swapLocations,
@@ -110,7 +143,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
       children: [
         // Departure Location Tile
         _buildLocationTile("Leaving from", departure, () {
-          // TODO: Implement location picker
+          _selectLocation(true);
         }, isDeparture: true),
 
         Padding(
@@ -120,7 +153,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
 
         // Arrival Location Tile
         _buildLocationTile("Going to", arrival, () {
-          // TODO: Implement location picker
+          _selectLocation(false);
         }, isDeparture: false),
 
         Padding(
@@ -162,7 +195,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
 
         // Search Button
         Padding(
-          padding: const EdgeInsets.all(0),
+          padding: const EdgeInsets.all(16.0),
           child: SizedBox(
             width: double.infinity,
             child: BlaButton(
@@ -170,7 +203,26 @@ class _RidePrefFormState extends State<RidePrefForm> {
               type: "PRIMARY",
               onPressed: () {
                 if (_isFormValid()) {
-                  // Proceed with search functionality
+                  // Create a new RidePref object with the selected values
+                  final ridePref = RidePref(
+                    departure: departure!,
+                    arrival: arrival!,
+                    departureDate: departureDate,
+                    requestedSeats: requestedSeats,
+                  );
+                  
+                  // You can either navigate to the next screen or return the ridePref
+                  print("RidePref created: $ridePref");
+                  
+                  // Example: Show a snackbar with the selection
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        "Searching for rides from ${departure!.name} to ${arrival!.name} on ${DateFormat('E d MMM').format(departureDate)}"
+                      ),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
                 } else {
                   // Show error message if form is invalid
                   showDialog(
