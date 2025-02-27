@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:week_3_blabla_project/utils/animations_util.dart';
 
 import '../../../model/ride/locations.dart';
 import '../../../model/ride_pref/ride_pref.dart';
@@ -54,13 +55,13 @@ class _RidePrefFormState extends State<RidePrefForm> {
   Future<void> _selectLocation(bool isDeparture) async {
     final Location? selectedLocation = await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => LocationPickerScreen(
-          title: isDeparture ? "Select departure" : "Select destination", 
+      AnimationUtils.createBottomToTopRoute(
+        LocationPickerScreen(
+          // title: isDeparture ? "Select departure" : "Select destination",
         ),
       ),
     );
-    
+
     if (selectedLocation != null) {
       setState(() {
         if (isDeparture) {
@@ -106,23 +107,28 @@ class _RidePrefFormState extends State<RidePrefForm> {
   // ----------------------------------
 
   // This function can be used to build ListTile components for departure, arrival, date, etc.
-  Widget _buildLocationTile(String title, Location? location, Function onTap, {bool isDeparture = true}) {
+  Widget _buildLocationTile(String title, Location? location, Function onTap,
+      {bool isDeparture = true}) {
     return ListTile(
       leading: Icon(
-        isDeparture ? Icons.radio_button_unchecked_rounded : Icons.location_on_outlined, 
-        color: BlaColors.neutralLight
-      ),
+          isDeparture
+              ? Icons.radio_button_unchecked_rounded
+              : Icons.location_on_outlined,
+          color: BlaColors.neutralLight),
       title: Text(
         location?.name ?? title,
         style: BlaTextStyles.label.copyWith(
-          color: location != null ? BlaColors.neutralDark : BlaColors.neutralLight
-        ),
+            color: location != null
+                ? BlaColors.neutralDark
+                : BlaColors.neutralLight),
       ),
-      subtitle: location != null ? 
-        Text(
-          location.country.toString().split('.').last,
-          style: BlaTextStyles.label.copyWith(color: BlaColors.neutralLighter),
-        ) : null,
+      subtitle: location != null
+          ? Text(
+              location.country.toString().split('.').last,
+              style:
+                  BlaTextStyles.label.copyWith(color: BlaColors.neutralLighter),
+            )
+          : null,
       trailing: isDeparture
           ? GestureDetector(
               onTap: _swapLocations,
@@ -210,16 +216,15 @@ class _RidePrefFormState extends State<RidePrefForm> {
                     departureDate: departureDate,
                     requestedSeats: requestedSeats,
                   );
-                  
+
                   // You can either navigate to the next screen or return the ridePref
                   print("RidePref created: $ridePref");
-                  
+
                   // Example: Show a snackbar with the selection
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        "Searching for rides from ${departure!.name} to ${arrival!.name} on ${DateFormat('E d MMM').format(departureDate)}"
-                      ),
+                          "Searching for rides from ${departure!.name} to ${arrival!.name} on ${DateFormat('E d MMM').format(departureDate)}"),
                       duration: Duration(seconds: 2),
                     ),
                   );
@@ -230,7 +235,8 @@ class _RidePrefFormState extends State<RidePrefForm> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: Text("Validation Error"),
-                        content: Text("Please select both departure and arrival locations, date, and seats."),
+                        content: Text(
+                            "Please select both departure and arrival locations, date, and seats."),
                         actions: <Widget>[
                           TextButton(
                             child: Text("OK"),
