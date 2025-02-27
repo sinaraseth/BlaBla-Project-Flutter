@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../../../model/ride/locations.dart';
+import '../../../model/ride_pref/ride_pref.dart';
 import 'package:week_3_blabla_project/theme/theme.dart';
 import 'package:week_3_blabla_project/widgets/actions/buttons/bla_button.dart';
 import 'package:week_3_blabla_project/widgets/display/bla_divider.dart';
 
-import '../../../model/ride/locations.dart';
-import '../../../model/ride_pref/ride_pref.dart';
-
+/// A Ride Preference Form to select:
+///   - A departure location
+///   - An arrival location
+///   - A date
+///   - A number of seats
+///
+/// The form can be created with an optional initial RidePref.
 class RidePrefForm extends StatefulWidget {
   final RidePref? initRidePref;
 
@@ -18,17 +25,29 @@ class RidePrefForm extends StatefulWidget {
 
 class _RidePrefFormState extends State<RidePrefForm> {
   Location? departure;
-  Location? arrival;
   late DateTime departureDate;
-  int requestedSeats = 1;
+  Location? arrival;
+  late int requestedSeats;
 
+  // ----------------------------------
+  // Initialize the Form attributes
+  // ----------------------------------
   @override
   void initState() {
     super.initState();
     departureDate = DateTime.now(); // Default date
-    departure = null; // Set default values for departure
-    arrival = null; // Default values for arrival
+    requestedSeats = 1; // Default seats
+    if (widget.initRidePref != null) {
+      departure = widget.initRidePref?.departure;
+      arrival = widget.initRidePref?.arrival;
+      departureDate = widget.initRidePref?.departureDate ?? DateTime.now();
+      requestedSeats = widget.initRidePref?.requestedSeats ?? 1;
+    }
   }
+
+  // ----------------------------------
+  // Handle events
+  // ----------------------------------
 
   // Open date picker
   Future<void> _selectDate(BuildContext context) async {
@@ -59,50 +78,57 @@ class _RidePrefFormState extends State<RidePrefForm> {
     return departure != null && arrival != null && requestedSeats > 0;
   }
 
+  // ----------------------------------
+  // Compute the widgets rendering
+  // ----------------------------------
+
+  // This function can be used to build ListTile components for departure, arrival, date, etc.
+  Widget _buildLocationTile(String title, Location? location, Function onTap, {bool isDeparture = true}) {
+    return ListTile(
+      leading: Icon(Icons.radio_button_unchecked_rounded, color: BlaColors.neutralLight),
+      title: Text(
+        location?.name ?? title,
+        style: BlaTextStyles.label.copyWith(color: BlaColors.neutralLight),
+      ),
+      trailing: isDeparture
+          ? GestureDetector(
+              onTap: _swapLocations,
+              child: Icon(Icons.swap_vert, color: BlaColors.primary),
+            )
+          : null,
+      onTap: () => onTap(),
+    );
+  }
+
+  // ----------------------------------
+  // Build the widgets
+  // ----------------------------------
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Departure Location
-        ListTile(
-          leading: Icon(Icons.radio_button_unchecked_rounded, color: BlaColors.neutralLight),
-          title: Text(
-            departure?.name ?? "Leaving from",
-            style: BlaTextStyles.label.copyWith(color: BlaColors.neutralLight),
-          ),
-          trailing: GestureDetector(
-            onTap: _swapLocations, // Swap locations when tapped
-            child: Icon(Icons.swap_vert, color: BlaColors.primary),
-          ),
-          onTap: () {
-            // TODO: Implement location picker
-          },
-        ),
+        // Departure Location Tile
+        _buildLocationTile("Leaving from", departure, () {
+          // TODO: Implement location picker
+        }, isDeparture: true),
 
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 30),
           child: BlaDivider(),
         ),
 
-        // Arrival Location
-        ListTile(
-          leading: Icon(Icons.radio_button_unchecked_rounded, color: BlaColors.neutralLight),
-          title: Text(
-            arrival?.name ?? "Going to",
-            style: BlaTextStyles.label.copyWith(color: BlaColors.neutralLight),
-          ),
-          onTap: () {
-            // TODO: Implement location picker
-          },
-        ),
+        // Arrival Location Tile
+        _buildLocationTile("Going to", arrival, () {
+          // TODO: Implement location picker
+        }, isDeparture: false),
 
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 30),
           child: BlaDivider(),
         ),
 
-        // Date Selection
+        // Date Selection Tile
         ListTile(
           leading: Icon(Icons.calendar_month, color: BlaColors.neutralLight),
           title: Text(
@@ -117,7 +143,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
           child: BlaDivider(),
         ),
 
-        // Number of Seats
+        // Number of Seats Tile
         ListTile(
           leading: Icon(Icons.person, color: BlaColors.neutralLight),
           title: Text(
