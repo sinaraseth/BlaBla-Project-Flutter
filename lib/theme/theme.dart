@@ -69,7 +69,11 @@ class BlaSpacings {
   static const double xxl = 40; 
 
   static const double radius = 16; 
-  static const double radiusLarge = 24; 
+  static const double radiusLarge = 24;
+
+  static var medium;
+
+  static var small; 
 }
 
 
@@ -81,4 +85,5 @@ ThemeData appTheme =  ThemeData(
   fontFamily: 'Eesti',
   scaffoldBackgroundColor: Colors.white,
 );
+ 
  
