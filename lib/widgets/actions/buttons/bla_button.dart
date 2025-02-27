@@ -19,6 +19,7 @@ class BlaButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     // Create the icon with the specified size and match with text is better
     final Icon? sizedIcon = icon != null 
         ? Icon(

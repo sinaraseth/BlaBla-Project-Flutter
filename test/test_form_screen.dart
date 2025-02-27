@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:week_3_blabla_project/dummy_data/dummy_data.dart';
+import 'package:week_3_blabla_project/model/ride/locations.dart';
+import 'package:week_3_blabla_project/model/ride_pref/ride_pref.dart';
 import 'package:week_3_blabla_project/theme/theme.dart';
 import 'package:week_3_blabla_project/widgets/actions/buttons/bla_button.dart';
 import 'package:week_3_blabla_project/widgets/display/bla_divider.dart';
-
-import '../../../model/ride/locations.dart';
-import '../../../model/ride_pref/ride_pref.dart';
 
 class RidePrefForm extends StatefulWidget {
   final RidePref? initRidePref;
@@ -26,8 +26,10 @@ class _RidePrefFormState extends State<RidePrefForm> {
   void initState() {
     super.initState();
     departureDate = DateTime.now(); // Default date
-    departure = null; // Set default values for departure
-    arrival = null; // Default values for arrival
+    
+    // Set default locations from dummy data (London to Manchester)
+    departure = fakeLocations.firstWhere((loc) => loc.name == "London");
+    arrival = fakeLocations.firstWhere((loc) => loc.name == "Manchester");
   }
 
   // Open date picker
@@ -54,11 +56,6 @@ class _RidePrefFormState extends State<RidePrefForm> {
     });
   }
 
-  // Validation for the Search button
-  bool _isFormValid() {
-    return departure != null && arrival != null && requestedSeats > 0;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -69,7 +66,9 @@ class _RidePrefFormState extends State<RidePrefForm> {
           leading: Icon(Icons.radio_button_unchecked_rounded, color: BlaColors.neutralLight),
           title: Text(
             departure?.name ?? "Leaving from",
-            style: BlaTextStyles.label.copyWith(color: BlaColors.neutralLight),
+            style: BlaTextStyles.label.copyWith(
+              color: departure != null ? BlaColors.neutralDark : BlaColors.neutralLight,
+            ),
           ),
           trailing: GestureDetector(
             onTap: _swapLocations, // Swap locations when tapped
@@ -90,7 +89,9 @@ class _RidePrefFormState extends State<RidePrefForm> {
           leading: Icon(Icons.radio_button_unchecked_rounded, color: BlaColors.neutralLight),
           title: Text(
             arrival?.name ?? "Going to",
-            style: BlaTextStyles.label.copyWith(color: BlaColors.neutralLight),
+            style: BlaTextStyles.label.copyWith(
+              color: arrival != null ? BlaColors.neutralDark : BlaColors.neutralLight,
+            ),
           ),
           onTap: () {
             // TODO: Implement location picker
@@ -143,33 +144,29 @@ class _RidePrefFormState extends State<RidePrefForm> {
               text: "Search",
               type: "PRIMARY",
               onPressed: () {
-                if (_isFormValid()) {
-                  // Proceed with search functionality
-                } else {
-                  // Show error message if form is invalid
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text("Validation Error"),
-                        content: Text("Please select both departure and arrival locations, date, and seats."),
-                        actions: <Widget>[
-                          TextButton(
-                            child: Text("OK"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                }
+                // TODO: Implement search functionality
               },
             ),
           ),
         ),
       ],
+    );
+  }
+}
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: appTheme,
+      home: Scaffold(body: RidePrefForm()),
     );
   }
 }
