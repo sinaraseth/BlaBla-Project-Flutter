@@ -1,5 +1,6 @@
 import 'package:week_3_blabla_project/w4 - practice/model/ride/locations.dart';
 
+
 ///
 /// This model describes a ride preference.
 /// A ride preference consists of the selection of a departure + arrival + a date and a number of passenger
