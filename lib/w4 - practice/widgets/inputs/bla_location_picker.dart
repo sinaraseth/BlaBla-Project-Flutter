@@ -3,6 +3,7 @@ import 'package:week_3_blabla_project/w4 - practice/model/ride/locations.dart';
 
 import 'package:week_3_blabla_project/w4 - practice/service/locations_service.dart';
 import 'package:week_3_blabla_project/w4 - practice/theme/theme.dart';
+import 'package:week_3_blabla_project/w4 - practice/repository/mock/mock_location_repository.dart';
 
 ///
 /// This full-screen modal is in charge of providing (if confirmed) a selected location.
@@ -23,13 +24,19 @@ class _BlaLocationPickerState extends State<BlaLocationPicker> {
   // ----------------------------------
   // Initialize the Form attributes
   // ----------------------------------
+  late LocationsService locationsService;
 
   @override
   void initState() {
     super.initState();
+    // Initialize LocationsService with MockLocationsRepository
+    locationsService = LocationsService(MockLocationsRepository());
 
+    // Initialize filtered locations
     if (widget.initLocation != null) {
       filteredLocations = getLocationsFor(widget.initLocation!.name);
+    } else {
+      filteredLocations = locationsService.getAvailableLocations();
     }
   }
 
@@ -55,7 +62,7 @@ class _BlaLocationPickerState extends State<BlaLocationPicker> {
   }
 
   List<Location> getLocationsFor(String text) {
-    return LocationsService.availableLocations
+    return locationsService.getAvailableLocations()
         .where((location) =>
             location.name.toUpperCase().contains(text.toUpperCase()))
         .toList();

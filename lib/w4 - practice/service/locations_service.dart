@@ -1,6 +1,6 @@
 import 'package:week_3_blabla_project/w4 - practice/model/ride/locations.dart';
+import 'package:week_3_blabla_project/w4 - practice/repository/location_repository.dart';
 
-import 'package:week_3_blabla_project/w4 - practice/dummy_data/dummy_data.dart';
 
 ////
 ///   This service handles:
@@ -8,6 +8,12 @@ import 'package:week_3_blabla_project/w4 - practice/dummy_data/dummy_data.dart';
 ///
 class LocationsService {
 
-  static const List<Location> availableLocations = fakeLocations; 
+  final LocationsRepository locationsRepository;
+
+  LocationsService(this.locationsRepository);
+
+  List<Location> getAvailableLocations() {
+    return locationsRepository.getLocations();
+  }
  
 }
