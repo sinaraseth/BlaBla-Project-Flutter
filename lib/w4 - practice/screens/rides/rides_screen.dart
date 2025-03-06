@@ -6,8 +6,9 @@ import 'package:week_3_blabla_project/w4 - practice/model/ride/ride.dart';
 import 'package:week_3_blabla_project/w4 - practice/model/ride_pref/ride_pref.dart';
 import 'package:week_3_blabla_project/w4 - practice/service/rides_service.dart';
 import 'package:week_3_blabla_project/w4 - practice/theme/theme.dart';
- 
 import 'package:week_3_blabla_project/w4%20-%20practice/screens/rides/widgets/rides_tile.dart';
+import 'package:week_3_blabla_project/w4 - practice/model/ride/ride_filter.dart';
+
 
 ///
 ///  The Ride Selection screen allow user to select a ride, once ride preferences have been defined.
@@ -24,7 +25,10 @@ class _RidesScreenState extends State<RidesScreen> {
  
   RidePreference currentPreference  = fakeRidePrefs[0];   // TODO 1 :  We should get it from the service
 
-  List<Ride> get matchingRides => RidesService.getRidesFor(currentPreference);
+  RideFilter currentFilter = RideFilter();
+
+  List<Ride> get matchingRides =>
+      RidesService.instance.getRidesFor(currentPreference, currentFilter);
 
   void onBackPressed() {
     Navigator.of(context).pop();     //  Back to the previous view
