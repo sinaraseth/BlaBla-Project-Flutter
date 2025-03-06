@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:week_3_blabla_project/theme/theme.dart';
-import 'package:week_3_blabla_project/widgets/inputs/location_picker.dart';
+import 'package:week_3_blabla_project/W3%20-%20Practice/theme/theme.dart';
+import 'package:week_3_blabla_project/W3%20-%20Practice/widgets/inputs/location_picker.dart';
 
 void main() {
   runApp(const MyApp());

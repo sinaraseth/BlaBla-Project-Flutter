@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print
 
-import 'package:week_3_blabla_project/service/rides_service.dart';
-import 'package:week_3_blabla_project/service/locations_service.dart';
-import 'package:week_3_blabla_project/model/ride_pref/ride_pref.dart';
+import 'package:week_3_blabla_project/W3%20-%20Practice/service/rides_service.dart';
+import 'package:week_3_blabla_project/W3%20-%20Practice/service/locations_service.dart';
+import 'package:week_3_blabla_project/W3%20-%20Practice/model/ride_pref/ride_pref.dart';
 
 String _formatDateTime(DateTime? dt) {
   if (dt == null) return 'No date';

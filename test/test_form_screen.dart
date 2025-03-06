@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:week_3_blabla_project/dummy_data/dummy_data.dart';
-import 'package:week_3_blabla_project/model/ride/locations.dart';
-import 'package:week_3_blabla_project/model/ride_pref/ride_pref.dart';
-import 'package:week_3_blabla_project/theme/theme.dart';
-import 'package:week_3_blabla_project/widgets/actions/buttons/bla_button.dart';
-import 'package:week_3_blabla_project/widgets/display/bla_divider.dart';
+import 'package:week_3_blabla_project/W3%20-%20Practice/dummy_data/dummy_data.dart';
+import 'package:week_3_blabla_project/W3%20-%20Practice/model/ride/locations.dart';
+import 'package:week_3_blabla_project/W3%20-%20Practice/model/ride_pref/ride_pref.dart';
+import 'package:week_3_blabla_project/W3%20-%20Practice/theme/theme.dart';
+import 'package:week_3_blabla_project/W3%20-%20Practice/widgets/actions/buttons/bla_button.dart';
+import 'package:week_3_blabla_project/W3%20-%20Practice/widgets/display/bla_divider.dart';
 
 class RidePrefForm extends StatefulWidget {
   final RidePref? initRidePref;
