@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/post.dart';
-import '../providers/async_value.dart';
-import '../providers/post_provider.dart';
+import 'package:week_3_blabla_project/EX-2-START-CODE/model/post.dart';
+import 'package:week_3_blabla_project/EX-2-START-CODE/ui/providers/async_value.dart';
+import 'package:week_3_blabla_project/EX-2-START-CODE/ui/providers/post_provider.dart';
 
 class PostScreen extends StatelessWidget {
   const PostScreen({super.key});
@@ -18,7 +18,7 @@ class PostScreen extends StatelessWidget {
         actions: [
           IconButton(
             // 2- Fetch the post
-            onPressed: () => {postProvider.fetchPost(45)},
+            onPressed: () => {postProvider.fetchPost(25)},
             icon: const Icon(Icons.update),
           ),
         ],
@@ -45,6 +45,9 @@ class PostScreen extends StatelessWidget {
 
       case AsyncValueState.success:
         return PostCard(post: postValue.data!); // display the post
+
+      case AsyncValueState.empty:
+         return Text('No Post for now');
     }
   }
 }
@@ -52,10 +55,18 @@ class PostScreen extends StatelessWidget {
 class PostCard extends StatelessWidget {
   const PostCard({super.key, required this.post});
 
-  final Post post;
+  final List<Post> post;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(title: Text(post.title), subtitle: Text(post.description));
+    return ListView.builder(
+       itemCount: post.length,
+       itemBuilder: (context, index) {
+         return ListTile(
+           title: Text(post[index].title),
+           subtitle: Text(post[index].description),
+         );
+       },
+     );
   }
 }
