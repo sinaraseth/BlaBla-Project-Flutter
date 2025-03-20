@@ -18,7 +18,12 @@ class PostScreen extends StatelessWidget {
         actions: [
           IconButton(
             // 2- Fetch the post
-            onPressed: () => {postProvider.fetchPost(25)},
+            onPressed:
+                 () => {
+                   postProvider.fetchPost(
+                     Uri.parse('https://jsonplaceholder.typicode.com/posts'),
+                   ),
+                 },
             icon: const Icon(Icons.update),
           ),
         ],
@@ -55,18 +60,19 @@ class PostScreen extends StatelessWidget {
 class PostCard extends StatelessWidget {
   const PostCard({super.key, required this.post});
 
-  final List<Post> post;
+  final Post post;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-       itemCount: post.length,
-       itemBuilder: (context, index) {
-         return ListTile(
-           title: Text(post[index].title),
-           subtitle: Text(post[index].description),
-         );
-       },
-     );
+    // return ListView.builder(
+    //    itemCount: post.length,
+    //    itemBuilder: (context, index) {
+    //      return ListTile(
+    //        title: Text(post[index].title),
+    //        subtitle: Text(post[index].description),
+    //      );
+    //    },
+    //  );
+    return ListTile(title: Text(post.title), subtitle: Text(post.description));
   }
 }
