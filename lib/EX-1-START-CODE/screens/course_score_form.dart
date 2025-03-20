@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../models/course.dart';
+import 'package:week_3_blabla_project/EX-1-START-CODE/models/course.dart';
 
 const Color mainColor = Colors.blue;
 
